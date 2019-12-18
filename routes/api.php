@@ -1,6 +1,6 @@
 <?php
 
-use App\Event;
+use App\Publication;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 Route::get('/events', function (Request $request) {
-    $events = Event::all();
+    $events = Publication::all();
     return response()->json($events);
 });
 // Route::get('/endpoint', function (Request $request) {
