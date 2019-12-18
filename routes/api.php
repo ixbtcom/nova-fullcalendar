@@ -1,6 +1,6 @@
 <?php
 
-use App\Publication;
+use App\Projects\Gametech\GTNews;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 Route::get('/events', function (Request $request) {
-    $events = Publication::all();
+    $events = GTNews::all();
     return response()->json($events);
 });
 // Route::get('/endpoint', function (Request $request) {

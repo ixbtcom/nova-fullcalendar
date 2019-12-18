@@ -58,7 +58,7 @@
         },
         mounted() {
             console.log('mounted()')
-            axios.get('/mpanius/fullcalendar/events').then(response => {
+            axios.get('/nova-vendor/fullcalendar/events').then(response => {
                 this.events = response.data
                 if (this.events) {
                     this.calendarEvents = []
