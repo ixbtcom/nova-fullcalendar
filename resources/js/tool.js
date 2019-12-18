@@ -1,9 +1,9 @@
-Nova.booting((Vue, router, store) => {
-  router.addRoutes([
-    {
-      name: 'fullcalendar',
-      path: '/fullcalendar',
-      component: require('./components/Tool'),
-    },
-  ])
+Nova.booting((Vue, router) => {
+    router.addRoutes([
+        {
+            name: 'fullcalendar',
+            path: '/fullcalendar',
+            component: require('./components/Tool'),
+        },
+    ])
 })
