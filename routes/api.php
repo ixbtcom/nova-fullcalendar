@@ -18,7 +18,7 @@ Route::get('/events', function (Request $request) {
 
     $type = auth()->user()->flags['calendar'] ?: 'App\Projects\Gametech\GTNews';
     $config = ['resourceBaseUrl' => Nova::resourceForModel($type)::uriKey()];
-    $events = $type::select('id','title','pubdatetime')->whereBetween('pubdatetime',[\Carbon\Carbon::now()->startOfYear()->timestamp, \Carbon\Carbon::now()->endOfYear()->addMonths(3)->timestamp])->get();
+    $events = $type::select('id','title','pubdatetime','publish')->whereBetween('pubdatetime',[\Carbon\Carbon::now()->startOfYear()->timestamp, \Carbon\Carbon::now()->endOfYear()->addMonths(3)->timestamp])->get();
     return response()->json(['events' => $events, 'config' => $config]);
 });
 Route::get('/events/{type}', function (Request $request, $type = 'App\Projects\Gametech\GTNews') {

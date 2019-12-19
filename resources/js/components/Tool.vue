@@ -14,6 +14,7 @@
             :default-timed-event-duration="calendarDefaultEventDuration"
             :locales="calendarLocales"
             :views="calendarCustomViews"
+            :event-background-color="calendarEventColor"
             :header="{
                 left: 'prev next today',
                 center: 'title',
@@ -65,6 +66,7 @@
                 calendarDefaultDate: $startDate,
                 calendarDefaultView: 'listLong',
                 calendarLocales: [ruLocale],
+                calendarEventColor: 'green',
                 calendarCustomViews: {
                     listLong:
                         {
@@ -99,6 +101,7 @@
                         this.calendarEvents.push({
                             id: event.id,
                             url: 'resources/'+this.config['resourceBaseUrl'] +'/'+ event.id + '/edit',
+                            color: ((event.publish === 'yes') ? 'red':'blue'),
                             title: event.title,
                             start: event.pubdatetime,
 
