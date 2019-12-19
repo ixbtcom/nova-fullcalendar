@@ -53,7 +53,6 @@
 
     import FullCalendar from "@fullcalendar/vue";
     import dayGridPlugin from "@fullcalendar/daygrid";
-    import vSelect from 'vue-select'
     import Multiselect from 'vue-multiselect'
     import interactionPlugin from "@fullcalendar/interaction";
     import listViewPlugin from "@fullcalendar/list"
