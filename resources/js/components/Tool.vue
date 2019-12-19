@@ -9,10 +9,15 @@
             :plugins="calendarPlugins"
             :weekends="calendarWeekends"
             :events="calendarEvents"
+            :default-view="calendarDefaultView"
+            :default-date="calendarDefaultDate"
+            :default-timed-event-duration="calendarDefaultEventDuration"
+            :locales="calendarLocales"
+            :views="calendarCustomViews"
             :header="{
-                left: 'prev,next today',
+                left: 'prev next today',
                 center: 'title',
-                right: 'dayGridMonth,timeGridWeek,listWeek'
+                right: 'dayGridMonth, listLong, twoWeeks'
             }"
         />
     </div>
@@ -24,6 +29,8 @@
     import dayGridPlugin from "@fullcalendar/daygrid";
     import timeGridPlugin from "@fullcalendar/timegrid";
     import interactionPlugin from "@fullcalendar/interaction";
+    import listViewPlugin from "@fullcalendar/list"
+    import ruLocale from "@fullcalendar/core/locales/ru"
 
     export default {
         components: {
@@ -35,6 +42,8 @@
             },
             handleEventClick(info) {
                 console.log(info);
+
+
             },
             handleMouseEnter(info) {
                 console.log(info);
@@ -44,29 +53,55 @@
             },
         },
         data() {
+            let $nowDate = new Date();
+            let $startDate = new Date($nowDate.getFullYear(),$nowDate.getMonth(),1);
             return {
                 calendarPlugins: [
                     dayGridPlugin,
-                    timeGridPlugin,
-                    interactionPlugin
+                    interactionPlugin,
+                    listViewPlugin
                 ],
                 calendarWeekends: true,
-                calendarEvents: [
-                    { title: "Today", start: new Date() }
-                ]
+                calendarDefaultDate: $startDate,
+                calendarDefaultView: 'listLong',
+                calendarLocales: [ruLocale],
+                calendarCustomViews: {
+                    listLong:
+                        {
+                            type: 'listMonth',
+                            buttonText: 'Месяц списком'
+                        },
+                        twoWeeks:
+                            {
+                                type: 'list',
+                                duration: {days:14},
+                                buttonText: 'Две недели'
+                            }
+
+                },
+
+                calendarDefaultEventDuration: '00:01',
+                calendarEvents: [],
+
             };
         },
         mounted() {
-            console.log('mounted()')
+            //console.log('mounted()');
+
             axios.get('/nova-vendor/fullcalendar/events').then(response => {
-                this.events = response.data
+                this.events = response.data['events'];
+                this.config = response.data['config'];
                 if (this.events) {
-                    this.calendarEvents = []
+                    this.calendarEvents = [];
                     this.events.forEach((event) => {
+                       // console.log(event.pubdatetime);
+                       // console.log(event.title);
                         this.calendarEvents.push({
+                            id: event.id,
+                            url: 'resources/'+this.config['resourceBaseUrl'] +'/'+ event.id + '/edit',
                             title: event.title,
-                            start: event.start_date,
-                            end: event.end_date
+                            start: event.pubdatetime,
+
                         })
                     })
                 }
@@ -80,4 +115,5 @@
     @import "~@fullcalendar/core/main.css";
     @import "~@fullcalendar/daygrid/main.css";
     @import "~@fullcalendar/timegrid/main.css";
+    @import "~@fullcalendar/list/main.css";
 </style>

@@ -15,7 +15,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 Route::get('/events', function (Request $request) {
-    $events = GTNews::all();
+
+    $type = auth()->user()->flags['calendar'] ?: 'App\Projects\Gametech\GTNews';
+    $config = ['resourceBaseUrl' => Nova::resourceForModel($type)::uriKey()];
+    $events = $type::select('id','title','pubdatetime')->whereBetween('pubdatetime',[\Carbon\Carbon::now()->startOfYear()->timestamp, \Carbon\Carbon::now()->endOfYear()->addMonths(3)->timestamp])->get();
+    return response()->json(['events' => $events, 'config' => $config]);
+});
+Route::get('/events/{type}', function (Request $request, $type = 'App\Projects\Gametech\GTNews') {
+
+    $events = $type::whereBetween('pubdatetime',[\Carbon\Carbon::now()->startOfMonth()->timestamp, \Carbon\Carbon::now()->endOfMonth()->timestamp])->get();
     return response()->json($events);
 });
 // Route::get('/endpoint', function (Request $request) {
